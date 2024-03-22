@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRA Form</title>
+</head>
+<body>
+    <h1>KRA Form</h1>
+    <form id="kraForm">
+        <label for="kra01">KRA1:</label>
+        <input type="text" id="kra01" contenteditable><br><br>
+
+        <label for="kra02">KRA2:</label>
+        <input type="text" id="kra02" contenteditable><br><br>
+
+        <label for="kra03">KRA3:</label>
+        <input type="text" id="kra03" contenteditable><br><br>
+
+        <label for="kra03">KRA4:</label>
+        <input type="text" id="kra04" contenteditable><br><br>
+
+        <label for="kra03">KRA5:</label>
+        <input type="text" id="kra05" contenteditable><br><br>
+
+        <label for="kra03">KRA6:</label>
+        <input type="text" id="kra06" contenteditable><br><br>
+		
+        <!-- Add similar fields for KRA 04 to KRA 10 -->
+
+        <!-- Admin functionalities -->
+        <div style="display: none;"> <!-- Only visible for admin login -->
+            <button onclick="updateSubTask()">Update Sub Task</button>
+            <button onclick="deleteKRA()">Delete</button>
+            <button onclick="addKRA()">Add</button>
+        </div>
+    </form>
+
+    <!-- Option to go back to index.html -->
+    <a href="index.html">Go Back</a>
+
+    <script>
+        function updateSubTask() {
+            // Logic to update sub task
+        }
+
+        function deleteKRA() {
+            // Logic to delete KRA
+        }
+
+        function addKRA() {
+            // Logic to add KRA
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to PMS</title>
+</head>
+<body>
+    <h1>Welcome to PMS Nikitha Build-Tech Pvt Ltd</h1>
+    <form id="employeeForm">
+        <label for="employeeId">Employee ID:</label>
+        <select id="employeeId" onchange="fetchEmployeeData()">
+            <!-- Dropdown options will be populated dynamically -->
+        </select><br><br>
+
+        <label for="employeeName">Employee Name:</label>
+        <input type="text" id="employeeName" readonly><br><br>
+
+        <label for="dateOfJoining">Date of Joining:</label>
+        <input type="text" id="dateOfJoining" readonly><br><br>
+
+        <label for="designation">Designation:</label>
+        <input type="text" id="designation" readonly><br><br>
+
+        <label for="department">Department:</label>
+        <input type="text" id="department" readonly><br><br>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" readonly><br><br>
+
+        <label for="reportingManager">Reporting Manager:</label>
+        <input type="text" id="reportingManager" readonly><br><br>
+
+        <!-- Next page link -->
+        <a href="page2.html">Next Page</a>
+    </form>
+
+    <script>
+        function fetchEmployeeData() {
+            var employeeId = document.getElementById("employeeId").value;
+            var xhr = new XMLHttpRequest();
+            // Replace the placeholder URL below with your actual Google Apps Script web app URL
+            xhr.open("GET", "YOUR_ACTUAL_WEB_APP_URL_HERE?employeeId=" + employeeId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var employeeData = JSON.parse(xhr.responseText);
+                    document.getElementById("employeeName").value = employeeData["Employee Name"];
+                    document.getElementById("dateOfJoining").value = employeeData["Date of Joining"];
+                    document.getElementById("designation").value = employeeData["Designation"];
+                    document.getElementById("department").value = employeeData["Department"];
+                    document.getElementById("location").value = employeeData["Location"];
+                    document.getElementById("reportingManager").value = employeeData["Reporting Manager"];
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
