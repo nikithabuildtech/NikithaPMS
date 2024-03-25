@@ -37,19 +37,25 @@
         function fetchEmployeeData() {
             var employeeId = document.getElementById("employeeId").value;
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "employee_data.php?employeeId=" + employeeId, true);
+            var url = "https://script.google.com/macros/s/AKfycbzmo6eq6TjGGqdDW8v-uzSWGY8fDaPt6choPSW5YqyDDIsV9fSbqCWMtwZrZuYBdO8S/exec";
+            url += "?employeeId=" + encodeURIComponent(employeeId); // Encode special characters in employee ID
+            xhr.open("GET", url, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var employeeData = JSON.parse(xhr.responseText);
-                    document.getElementById("employeeName").value = employeeData["Employee Name"];
-                    document.getElementById("dateOfJoining").value = employeeData["Date of Joining"];
-                    document.getElementById("designation").value = employeeData["Designation"];
-                    document.getElementById("department").value = employeeData["Department"];
-                    document.getElementById("location").value = employeeData["Location"];
-                    document.getElementById("reportingManager").value = employeeData["Reporting Manager"];
+                    updateEmployeeFields(employeeData);
                 }
             };
             xhr.send();
+        }
+
+        function updateEmployeeFields(employeeData) {
+            document.getElementById("employeeName").value = employeeData["Employee Name"];
+            document.getElementById("dateOfJoining").value = employeeData["Date of Joining"];
+            document.getElementById("designation").value = employeeData["Designation"];
+            document.getElementById("department").value = employeeData["Department"];
+            document.getElementById("location").value = employeeData["Location"];
+            document.getElementById("reportingManager").value = employeeData["Reporting Manager"];
         }
     </script>
 </body>
