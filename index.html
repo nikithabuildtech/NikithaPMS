@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to PMS</title>
+    <title>Welcome to PMS Nikitha Build-Tech Pvt Ltd</title>
 </head>
 <body>
     <h1>Welcome to PMS Nikitha Build-Tech Pvt Ltd</h1>
     <form id="employeeForm">
         <label for="employeeId">Employee ID:</label>
-        <select id="employeeId" onchange="fetchEmployeeData()">
-            <!-- Dropdown options will be populated dynamically -->
-        </select><br><br>
+        <input type="text" id="employeeId"><br><br>
 
         <label for="employeeName">Employee Name:</label>
         <input type="text" id="employeeName" readonly><br><br>
@@ -39,8 +37,7 @@
         function fetchEmployeeData() {
             var employeeId = document.getElementById("employeeId").value;
             var xhr = new XMLHttpRequest();
-            // Replace the placeholder URL below with your actual Google Apps Script web app URL
-            xhr.open("GET", "YOUR_ACTUAL_WEB_APP_URL_HERE?employeeId=" + employeeId, true);
+            xhr.open("GET", "employee_data.php?employeeId=" + employeeId, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var employeeData = JSON.parse(xhr.responseText);
