@@ -1,62 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to PMS Nikitha Build-Tech Pvt Ltd</title>
-</head>
-<body>
-    <h1>Welcome to PMS Nikitha Build-Tech Pvt Ltd</h1>
-    <form id="employeeForm">
-        <label for="employeeId">Employee ID:</label>
-        <input type="text" id="employeeId"> readonly><br><br>
+<?php
 
-        <label for="employeeName">Employee Name:</label>
-        <input type="text" id="employeeName" readonly><br><br>
+// Load PHPExcel library
+require 'PHPExcel/PHPExcel.php';
 
-        <label for="dateOfJoining">Date of Joining:</label>
-        <input type="text" id="dateOfJoining" readonly><br><br>
+// Path to the Excel file
+$excelFile = 'D:/PMS/PMS/PHS.xlsx';
 
-        <label for="designation">Designation:</label>
-        <input type="text" id="designation" readonly><br><br>
+// Name of the worksheet containing employee data
+$worksheetName = 'Data';
 
-        <label for="department">Department:</label>
-        <input type="text" id="department" readonly><br><br>
+// Function to fetch employee data based on employee ID
+function fetchEmployeeData($employeeId, $excelFile, $worksheetName) {
+    // Load the Excel file
+    $excelReader = PHPExcel_IOFactory::createReaderForFile($excelFile);
+    $excelObj = $excelReader->load($excelFile);
 
-        <label for="location">Location:</label>
-        <input type="text" id="location" readonly><br><br>
+    // Select the worksheet by name
+    $worksheet = $excelObj->getSheetByName($worksheetName);
 
-        <label for="reportingManager">Reporting Manager:</label>
-        <input type="text" id="reportingManager" readonly><br><br>
+    // Get the highest row number and column number
+    $highestRow = $worksheet->getHighestRow();
+    $highestColumn = $worksheet->getHighestColumn();
 
-        <!-- Next page link -->
-        <a href="page2.html">Next Page</a>
-    </form>
+    // Loop through each row to find the employee data
+    for ($row = 2; $row <= $highestRow; $row++) { // Start from row 2 to skip the header
+        $rowData = $worksheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 
-    <script>
-        function fetchEmployeeData() {
-            var employeeId = document.getElementById("employeeId").value;
-            var xhr = new XMLHttpRequest();
-            var url = "https://script.google.com/macros/s/AKfycbzmo6eq6TjGGqdDW8v-uzSWGY8fDaPt6choPSW5YqyDDIsV9fSbqCWMtwZrZuYBdO8S/exec";
-            url += "?employeeId=" + encodeURIComponent(employeeId); // Encode special characters in employee ID
-            xhr.open("GET", url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var employeeData = JSON.parse(xhr.responseText);
-                    updateEmployeeFields(employeeData);
-                }
-            };
-            xhr.send();
+        // Check if the employee ID matches
+        if ($rowData[0][1] == $employeeId) { // Assuming Employee ID is in column B
+            // Format the employee data into an associative array
+            $employeeData = array(
+                "Employee Name" => $rowData[0][2], // Assuming Employee Name is in column C
+                "Date of Joining" => $rowData[0][3], // Assuming Date of Joining is in column D
+                "Designation" => $rowData[0][4], // Assuming Designation is in column E
+                "Department" => $rowData[0][5], // Assuming Department is in column F
+                "Location" => $rowData[0][6], // Assuming Location is in column G
+                "Reporting Manager" => $rowData[0][7] // Assuming Reporting Manager is in column H
+            );
+            return $employeeData;
         }
+    }
+    return null; // Return null if employee ID is not found
+}
 
-        function updateEmployeeFields(employeeData) {
-            document.getElementById("employeeName").value = employeeData["Employee Name"];
-            document.getElementById("dateOfJoining").value = employeeData["Date of Joining"];
-            document.getElementById("designation").value = employeeData["Designation"];
-            document.getElementById("department").value = employeeData["Department"];
-            document.getElementById("location").value = employeeData["Location"];
-            document.getElementById("reportingManager").value = employeeData["Reporting Manager"];
-        }
-    </script>
-</body>
-</html>
+// Check if the employee ID parameter is set
+if (isset($_GET['employeeId'])) {
+    // Get the employee ID from the query string
+    $employeeId = $_GET['employeeId'];
+
+    // Fetch employee data based on the employee ID
+    $employeeData = fetchEmployeeData($employeeId, $excelFile, $worksheetName);
+
+    // Check if employee data is found
+    if ($employeeData !== null) {
+        // Return employee data as JSON response
+        echo json_encode($employeeData);
+    } else {
+        // Return error message if employee ID is not found
+        echo json_encode(array("error" => "Employee not found"));
+    }
+} else {
+    // Return error message if employee ID parameter is missing
+    echo json_encode(array("error" => "Missing or invalid 'employeeId' parameter"));
+}
+
+?>
